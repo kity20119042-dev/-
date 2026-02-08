@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>專業產能計算工具</title>
+    <title>包裹平均秒數計算器</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -16,7 +16,7 @@
             margin: 0 auto;
         }
         input[type="datetime-local"], input[type="number"] {
-            font-size: 16px !important; /* 防止 iOS 自動放大 */
+            font-size: 16px !important; /* 防止 iOS 自動放大畫面 */
         }
         .btn-active:active {
             transform: scale(0.96);
@@ -26,15 +26,15 @@
 <body class="p-4 md:p-8">
 
     <div class="app-container">
-        <!-- 標題 -->
+        <!-- 標題區域 -->
         <div class="mb-8 text-center">
-            <h1 class="text-3xl font-black text-slate-900 tracking-tight">產能效率計算</h1>
-            <p class="text-slate-500 mt-2 font-medium">精確至秒 ‧ 自動分析 ‧ 隨時分享</p>
+            <h1 class="text-3xl font-black text-slate-900 tracking-tight">包裹平均秒數計算器</h1>
+            <p class="text-slate-500 mt-2 font-medium">即時計算處理時長與平均產能</p>
         </div>
 
         <div class="bg-white rounded-[2rem] shadow-xl shadow-slate-200/60 p-6 border border-slate-100">
             <div class="space-y-6">
-                <!-- 時間選取 -->
+                <!-- 時間選取組 -->
                 <div class="grid grid-cols-1 gap-4">
                     <div class="relative">
                         <label class="text-[11px] font-bold text-slate-400 ml-2 mb-1 block uppercase tracking-wider">開始時間</label>
@@ -48,55 +48,57 @@
                     </div>
                 </div>
 
-                <!-- 包裹數量 -->
+                <!-- 包裹數量輸入 -->
                 <div class="relative">
-                    <label class="text-[11px] font-bold text-slate-400 ml-2 mb-1 block uppercase tracking-wider">包裹總數</label>
-                    <input type="number" id="packageCount" placeholder="輸入處理件數..." inputmode="numeric"
+                    <label class="text-[11px] font-bold text-slate-400 ml-2 mb-1 block uppercase tracking-wider">包裹總件數</label>
+                    <input type="number" id="packageCount" placeholder="請輸入總數量" inputmode="numeric"
                            class="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-blue-500 rounded-2xl outline-none transition-all font-medium text-slate-700">
                 </div>
 
                 <!-- 計算按鈕 -->
                 <button onclick="performCalculation()" 
-                        class="btn-active w-full bg-slate-900 hover:bg-black text-white font-bold py-5 rounded-2xl transition-all shadow-lg shadow-slate-300 text-lg">
-                    產出分析報告
+                        class="btn-active w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-5 rounded-2xl transition-all shadow-lg shadow-blue-200 text-lg">
+                    立即生成產能報告
                 </button>
 
-                <!-- 結果區 -->
+                <!-- 結果顯示區 -->
                 <div id="resultArea" class="hidden space-y-4 animate-in fade-in slide-in-from-bottom-2">
-                    <!-- 時間報告 -->
-                    <div class="bg-indigo-50 p-5 rounded-2xl border border-indigo-100">
-                        <p class="text-indigo-400 text-[10px] font-black uppercase tracking-widest mb-2">時長分析</p>
-                        <div id="displayTime" class="text-xl font-bold text-indigo-900"></div>
-                        <div class="mt-2 text-xs text-indigo-400">總計：<span id="displayTotalSec" class="font-mono font-bold"></span> 秒</div>
+                    <!-- 時間時長分析 -->
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100">
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">時長分析報告</p>
+                        <div id="displayTime" class="text-xl font-bold text-slate-900"></div>
+                        <div class="mt-2 text-xs text-slate-400">總計：<span id="displayTotalSec" class="font-mono font-bold text-blue-600"></span> 秒</div>
                     </div>
 
-                    <!-- 效率報告 -->
-                    <div id="efficiencyCard" class="hidden bg-emerald-50 p-5 rounded-2xl border border-emerald-100">
-                        <p class="text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-1">平均產能</p>
-                        <div id="displayAvg" class="text-2xl font-black text-emerald-700"></div>
-                        <p class="text-[10px] text-emerald-400 mt-1">每處理一件所需的平均時間</p>
+                    <!-- 平均產能分析 -->
+                    <div id="efficiencyCard" class="hidden bg-emerald-50 p-5 rounded-2xl border border-emerald-100 text-center">
+                        <p class="text-emerald-500 text-[10px] font-black uppercase tracking-widest mb-1">平均每件耗時</p>
+                        <div id="displayAvg" class="text-3xl font-black text-emerald-700"></div>
+                        <p class="text-[10px] text-emerald-400 mt-1 font-medium">數據已精確至秒</p>
                     </div>
 
-                    <!-- 分享按鈕 -->
-                    <button onclick="copyToClipboard()" class="w-full py-3 text-slate-400 text-sm font-medium hover:text-slate-600 transition-colors">
-                        複製報告文字
+                    <!-- 功能按鈕 -->
+                    <button onclick="copyToClipboard()" class="w-full py-3 text-slate-400 text-sm font-medium hover:text-blue-600 transition-colors">
+                        點擊複製計算結果
                     </button>
                 </div>
             </div>
         </div>
 
-        <p class="text-center mt-8 text-slate-300 text-[10px] font-medium tracking-widest uppercase">
-            Professional Productivity System
-        </p>
+        <footer class="text-center mt-10 space-y-2">
+            <p class="text-slate-300 text-[10px] font-medium tracking-widest uppercase">
+                Productivity Calculation System
+            </p>
+        </footer>
     </div>
 
-    <!-- 提示框 -->
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-3 rounded-full text-sm font-bold opacity-0 transition-opacity pointer-events-none">
-        已複製報告
+    <!-- 複製成功提示 -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-full text-sm font-bold opacity-0 transition-opacity pointer-events-none shadow-2xl">
+        結果已複製到剪貼簿
     </div>
 
     <script>
-        // 設定預設時間
+        // 初始化時間為當前時刻
         window.onload = () => {
             const now = new Date();
             const tzOffset = now.getTimezoneOffset() * 60000;
@@ -106,18 +108,25 @@
         };
 
         function performCalculation() {
-            const start = new Date(document.getElementById('startTime').value);
-            const end = new Date(document.getElementById('endTime').value);
-            const count = parseInt(document.getElementById('packageCount').value);
+            const startInput = document.getElementById('startTime').value;
+            const endInput = document.getElementById('endTime').value;
+            const countInput = document.getElementById('packageCount').value;
 
-            if (isNaN(start) || isNaN(end)) return;
+            if (!startInput || !endInput) return;
 
+            const start = new Date(startInput);
+            const end = new Date(endInput);
+            const count = parseInt(countInput);
+
+            // 計算總秒數（取絕對值）
             const totalSec = Math.abs(Math.floor((end - start) / 1000));
+            
+            // 計算 天、時、分
             const d = Math.floor(totalSec / 86400);
             const h = Math.floor((totalSec % 86400) / 3600);
             const m = Math.floor((totalSec % 3600) / 60);
 
-            // 顯示結果區
+            // 顯示結果面板
             document.getElementById('resultArea').classList.remove('hidden');
             document.getElementById('displayTotalSec').innerText = totalSec.toLocaleString();
 
@@ -125,37 +134,45 @@
             if (d > 0) timeResult += `${d} 天 `;
             if (h > 0 || d > 0) timeResult += `${h} 小時 `;
             if (m > 0 || h > 0 || d > 0) timeResult += `${m} 分鐘 `;
-            if (totalSec < 60) timeResult = "未滿 1 分鐘";
+            if (totalSec < 60) timeResult = "未滿一分鐘";
             document.getElementById('displayTime').innerText = timeResult;
 
-            // 效率計算
+            // 處理平均產能卡片
             const effCard = document.getElementById('efficiencyCard');
-            if (count > 0) {
+            if (!isNaN(count) && count > 0) {
                 effCard.classList.remove('hidden');
                 const avg = totalSec / count;
-                document.getElementById('displayAvg').innerText = 
-                    avg >= 60 ? `${Math.floor(avg/60)}分 ${(avg%60).toFixed(1)}秒` : `${avg.toFixed(2)} 秒`;
+                
+                // 如果平均超過 60 秒則顯示分秒，否則顯示精確秒數
+                if (avg >= 60) {
+                    const avgM = Math.floor(avg / 60);
+                    const avgS = (avg % 60).toFixed(1);
+                    document.getElementById('displayAvg').innerText = `${avgM} 分 ${avgS} 秒`;
+                } else {
+                    document.getElementById('displayAvg').innerText = `${avg.toFixed(2)} 秒`;
+                }
             } else {
                 effCard.classList.add('hidden');
             }
 
-            // 手機震動反饋
+            // 手機震動反饋 (若裝置支援)
             if (navigator.vibrate) navigator.vibrate(40);
         }
 
         function copyToClipboard() {
             const time = document.getElementById('displayTime').innerText;
             const total = document.getElementById('displayTotalSec').innerText;
-            const avg = document.getElementById('efficiencyCard').classList.contains('hidden') ? "" : `\n平均效率：${document.getElementById('displayAvg').innerText} / 件`;
+            const avgVisible = !document.getElementById('efficiencyCard').classList.contains('hidden');
+            const avgText = avgVisible ? `\n平均效率：${document.getElementById('displayAvg').innerText} / 件` : "";
             
-            const text = `【產能報告】\n總時長：${time}\n總秒數：${total} 秒${avg}`;
+            const resultString = `【包裹產能報告】\n總時長：${time}\n總秒數：${total} 秒${avgText}`;
             
-            const el = document.createElement('textarea');
-            el.value = text;
-            document.body.appendChild(el);
-            el.select();
+            const textArea = document.createElement('textarea');
+            textArea.value = resultString;
+            document.body.appendChild(textArea);
+            textArea.select();
             document.execCommand('copy');
-            document.body.removeChild(el);
+            document.body.removeChild(textArea);
 
             const toast = document.getElementById('toast');
             toast.style.opacity = "1";
